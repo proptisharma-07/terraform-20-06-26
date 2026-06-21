@@ -1,87 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website Under Maintenance</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Under Maintenance</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:20px;
+    padding:50px 40px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+
+.icon{
+    font-size:90px;
+    margin-bottom:20px;
+}
+
+h1{
+    font-size:3rem;
+    margin-bottom:15px;
+}
+
+.subtitle{
+    font-size:1.4rem;
+    color:#fbbf24;
+    margin-bottom:25px;
+    font-weight:600;
+}
+
+p{
+    color:#cbd5e1;
+    font-size:1.1rem;
+    line-height:1.8;
+    margin-bottom:15px;
+}
+
+.status{
+    display:inline-block;
+    margin-top:25px;
+    padding:12px 28px;
+    background:#f59e0b;
+    color:#111827;
+    font-weight:bold;
+    border-radius:50px;
+}
+
+.info-boxes{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:15px;
+    margin-top:35px;
+}
+
+.box{
+    width:220px;
+    padding:20px;
+    background:rgba(255,255,255,0.08);
+    border-radius:12px;
+}
+
+.box h3{
+    margin-bottom:10px;
+    color:#fbbf24;
+}
+
+.box p{
+    font-size:0.95rem;
+    margin:0;
+}
+
+.footer{
+    margin-top:35px;
+    font-size:0.9rem;
+    color:#94a3b8;
+}
+
+@media(max-width:768px){
+    h1{
+        font-size:2.2rem;
     }
 
-    body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
-      text-align: center;
+    .subtitle{
+        font-size:1.2rem;
     }
 
-    .container {
-      max-width: 700px;
-      padding: 30px;
+    .box{
+        width:100%;
     }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      color: #fbbf24;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.2rem;
-      line-height: 1.8;
-      color: #d1d5db;
-    }
-
-    .icon {
-      font-size: 80px;
-      margin-bottom: 20px;
-    }
-
-    .status {
-      margin-top: 30px;
-      display: inline-block;
-      padding: 12px 25px;
-      background: #f59e0b;
-      color: black;
-      font-weight: bold;
-      border-radius: 8px;
-    }
-  </style>
+}
+</style>
 </head>
+
 <body>
 
-  <div class="container">
-    <div class="icon">🔧</div>
+<div class="container">
+
+    <div class="icon">🚧</div>
 
     <h1>Website Under Maintenance</h1>
 
-    <h2>We'll Be Back Soon!</h2>
+    <div class="subtitle">
+        We're Making Improvements
+    </div>
 
     <p>
-      We are currently performing scheduled maintenance to improve our services.
-      We apologize for any inconvenience and appreciate your patience.
+        Our website is currently undergoing scheduled maintenance and upgrades.
+        We're working hard to improve performance, security, and your overall experience.
     </p>
 
-    <p style="margin-top:20px;">
-      Please check back later.
+    <p>
+        We apologize for any inconvenience and appreciate your patience.
+        Please check back again shortly.
     </p>
 
     <div class="status">
-      Maintenance in Progress
+        Maintenance In Progress
     </div>
-  </div>
+
+    <div class="info-boxes">
+
+        <div class="box">
+            <h3>⚡ Performance</h3>
+            <p>Optimizing speed and reliability.</p>
+        </div>
+
+        <div class="box">
+            <h3>🔒 Security</h3>
+            <p>Applying the latest security updates.</p>
+        </div>
+
+        <div class="box">
+            <h3>🚀 Improvements</h3>
+            <p>Enhancing features and user experience.</p>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Thank you for your understanding and support.
+    </div>
+
+</div>
 
 </body>
 </html>
