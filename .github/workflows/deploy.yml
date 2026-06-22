@@ -55,9 +55,7 @@ steps:
 
   - name: Build Image
     run: |
-      docker build \
-        -t us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/demo-app:${{ github.sha }} \
-        ./app
+      docker build -t us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/demo-app:${{ github.sha }} ./app
 
   - name: Push Image
     run: |
@@ -71,3 +69,4 @@ steps:
         --platform managed \
         --allow-unauthenticated
 ```
+
