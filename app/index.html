@@ -1,87 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website Under Maintenance</title>
+name: Deploy to Cloud Run
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - qa
+      - prod
 
-    body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
-      text-align: center;
-    }
+permissions:
+  contents: read
+  id-token: write
 
-    .container {
-      max-width: 700px;
-      padding: 30px;
-    }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
+    environment: ${{ github.ref_name }}
 
-    h2 {
-      color: #fbbf24;
-      margin-bottom: 20px;
-    }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    p {
-      font-size: 1.2rem;
-      line-height: 1.8;
-      color: #d1d5db;
-    }
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-    .icon {
-      font-size: 80px;
-      margin-bottom: 20px;
-    }
+      - name: Setup GCloud
+        uses: google-github-actions/setup-gcloud@v2
 
-    .status {
-      margin-top: 30px;
-      display: inline-block;
-      padding: 12px 25px;
-      background: #f59e0b;
-      color: black;
-      font-weight: bold;
-      border-radius: 8px;
-    }
-  </style>
-</head>
-<body>
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
-  <div class="container">
-    <div class="icon">🔧</div>
+      - name: Set Variables
+        run: |
+          echo "BRANCH_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
+          echo "IMAGE_NAME=demo-app-${{ github.ref_name }}" >> $GITHUB_ENV
+          echo "SERVICE_NAME=demo-app-${{ github.ref_name }}" >> $GITHUB_ENV
 
-    <h1>Website Under Maintenance</h1>
+      - name: Build Image
+        run: |
+          docker build \
+            -t us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/${IMAGE_NAME}:${{ github.sha }} \
+            ./app
 
-    <h2>We'll Be Back Soon!</h2>
+      - name: Push Image
+        run: |
+          docker push \
+            us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/${IMAGE_NAME}:${{ github.sha }}
 
-    <p>
-      We are currently performing scheduled maintenance to improve our services.
-      We apologize for any inconvenience and appreciate your patience.
-    </p>
-
-    <p style="margin-top:20px;">
-      Please check back later.
-    </p>
-
-    <div class="status">
-      Maintenance in Progress
-    </div>
-  </div>
-
-</body>
-</html>
+      - name: Deploy Cloud Run
+        run: |
+          gcloud run deploy ${SERVICE_NAME} \
+            --image us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/${IMAGE_NAME}:${{ github.sha }} \
+            --region us-central1 \
+            --platform managed \
+            --allow-unauthenticated
