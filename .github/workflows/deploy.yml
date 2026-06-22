@@ -23,22 +23,25 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: ${{ secrets.DEV_SERVICE_ACCOUNT }}
+           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+           service_account: ${{ secrets.DEV_SERVICE_ACCOUNT }}
+           project_id: ${{ secrets.PROJECT_ID }}
 
       - name: Auth QA
         if: github.ref == 'refs/heads/qa'
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: ${{ secrets.QA_SERVICE_ACCOUNT }}
+           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+           service_account: ${{ secrets.DEV_SERVICE_ACCOUNT }}
+           project_id: ${{ secrets.PROJECT_ID }}
 
       - name: Auth PROD
         if: github.ref == 'refs/heads/prod'
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: ${{ secrets.PROD_SERVICE_ACCOUNT }}
+            workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+            service_account: ${{ secrets.DEV_SERVICE_ACCOUNT }}
+            project_id: ${{ secrets.PROJECT_ID }}
 
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v2
