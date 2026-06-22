@@ -51,9 +51,9 @@ jobs:
           gcloud auth list
           gcloud config set project ${{ secrets.PROJECT_ID }}
 
-      - name: Configure Docker
+      - name: Set project
         run: |
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          gcloud config set project ${{ secrets.PROJECT_ID }}
 
       - name: Build Image
         run: |
