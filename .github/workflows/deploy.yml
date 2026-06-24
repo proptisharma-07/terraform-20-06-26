@@ -41,23 +41,16 @@ jobs:
           echo "IMAGE_NAME=demo-app-${{ github.ref_name }}" >> $GITHUB_ENV
           echo "SERVICE_NAME=demo-app-${{ github.ref_name }}" >> $GITHUB_ENV
 
-      # Yeh step check karega ki QA environment ke secrets workflow ko mil rahe hain ya nahi
-      - name: Debug Environment Secrets
-        run: |
-          if [ -z "${{ secrets.PROJECT_ID }}" ]; then
-            echo "❌ ERROR: PROJECT_ID secret is EMPTY for environment '${{ github.ref_name }}'!"
-            exit 1
-          else
-            echo "✅ PROJECT_ID secret is present."
-          fi
-
       - name: Build Image
         run: |
-          docker build -t us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/${IMAGE_NAME}:${{ github.sha }} ./app
+          docker build \
+            -t us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/${IMAGE_NAME}:${{ github.sha }} \
+            ./app
 
       - name: Push Image
         run: |
-          docker push us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/${IMAGE_NAME}:${{ github.sha }}
+          docker push \
+            us-central1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/app-repo/${IMAGE_NAME}:${{ github.sha }}
 
       - name: Deploy Cloud Run
         run: |
